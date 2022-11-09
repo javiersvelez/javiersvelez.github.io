@@ -21,8 +21,8 @@ if (navigator.getUserMedia) {
 
 function handleVideo(stream) {
     // Attach feed to video element
-    video.src = window.URL.createObjectURL(stream);
-
+    //video.src = window.URL.createObjectURL(stream);  //Deprecated method createObjectURL
+    video.srcObject = stream
 }
 
 function videoError(e) {
@@ -34,7 +34,7 @@ var video, canvas, context, w, h;
 $(document).ready(function() {
     // when DOM loaded, get canvas 2D context and store width and height of element
     canvas = document.getElementById('canvas');
-    context = canvas.getContext('2d');
+    context = canvas.getContext('2d', { willReadFrequently: true });
 
     _CANVASWIDTH = canvas.width;
     _CANVASHEIGHT = canvas.height;
@@ -51,7 +51,7 @@ $(document).ready(function() {
             imageData = context.getImageData(0, 0, w, h);
             var skinData = detectSkin(context, imageData);
 
-            //Deteccion y validacion
+            //Image detection and validation
             context.putImageData(skinData, 0, 0);
             validateSample(context, skinData);
             drawGuideLines(context);
@@ -82,7 +82,3 @@ $("#buttonSample").click(function() {
     _DATA += _SAMPLENUM + " " + result + "\n";
 
 });
-
-
-
-
